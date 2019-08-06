@@ -44,18 +44,26 @@
         
         if ([input isEqual: @"hold"]) {
             while (true) {
-                NSLog(@"Which die do you want to hold? (0-5)\n\n> ");
+                NSLog(@"Which die do you want to hold? (0-5)\nChoose held die's number to unhold\n\n> ");
                 NSString *dieIndex = [self prompt];
                 int dieIndexInt = [dieIndex intValue];
                 
                 if ((dieIndexInt >= 1 && dieIndexInt <= 5) || (dieIndexInt == 0 && [dieIndex isEqual: @"0"])) {
-                    [_heldDice addObject: _dice[dieIndexInt]];
+                    if ([_heldDice containsObject: _dice[dieIndexInt]]) {
+                        [_heldDice removeObject: _dice[dieIndexInt]];
+                    } else {
+                        [_heldDice addObject: _dice[dieIndexInt]];
+                    }
 
                     break;
                 }
 
                 NSLog(@"Invalid!");
             }
+        }
+        
+        if ([input isEqual: @""]) {
+            
         }
     }
 }
