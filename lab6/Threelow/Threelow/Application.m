@@ -2,29 +2,59 @@
 #import "Die.h"
 
 @implementation Application
-NSMutableArray* _dice;
-
 -(instancetype) init {
     if (self = [super init]) {
-        _dice = [[NSMutableArray alloc] init];
-        
-        for (int i = 0; i < 6; ++i) {
-            [_dice addObject: [[Die alloc] initAndRoll]];
-        }
+        _dice = @[
+            [[Die alloc] initAndRoll],
+            [[Die alloc] initAndRoll],
+            [[Die alloc] initAndRoll],
+            [[Die alloc] initAndRoll],
+            [[Die alloc] initAndRoll],
+            [[Die alloc] initAndRoll]
+        ];
+        _heldDice = [[NSMutableSet alloc] init];
     }
     
     return self;
 }
 -(void) start {
     while (true) {
-        NSLog(@"Now: %@", [self getDiceString]);
-        NSLog(@"roll\n\n> ");
+        NSString *diceString = @"";
+        
+        for (Die *die in _dice) {
+            diceString = [_heldDice containsObject: die]
+                ? [diceString stringByAppendingFormat: @"[%@]", [die asString]]
+                : [diceString stringByAppendingString: [die asString]];
+        }
+        
+        NSLog(@"Now: %@ (bracketed dice are held)", diceString);
+        NSLog(@"roll, hold\n\n> ");
         
         NSString *input = [self prompt];
         
         if ([input isEqual: @"roll"]) {
             for (Die *die in _dice) {
+                if ([_heldDice containsObject: die]) {
+                    continue;
+                }
+                
                 [die roll];
+            }
+        }
+        
+        if ([input isEqual: @"hold"]) {
+            while (true) {
+                NSLog(@"Which die do you want to hold? (0-5)\n\n> ");
+                NSString *dieIndex = [self prompt];
+                int dieIndexInt = [dieIndex intValue];
+                
+                if ((dieIndexInt >= 1 && dieIndexInt <= 5) || (dieIndexInt == 0 && [dieIndex isEqual: @"0"])) {
+                    [_heldDice addObject: _dice[dieIndexInt]];
+
+                    break;
+                }
+
+                NSLog(@"Invalid!");
             }
         }
     }
