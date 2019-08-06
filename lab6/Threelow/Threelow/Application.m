@@ -20,15 +20,17 @@
 -(void) start {
     while (true) {
         NSString *diceString = @"";
+        int score = 0;
         
         for (Die *die in _dice) {
             diceString = [_heldDice containsObject: die]
                 ? [diceString stringByAppendingFormat: @"[%@]", [die asString]]
                 : [diceString stringByAppendingString: [die asString]];
+            score += [die asInt];
         }
         
-        NSLog(@"Now: %@ (bracketed dice are held)", diceString);
-        NSLog(@"roll, hold\n\n> ");
+        NSLog(@"Now (bracketed dice are held): %@ (score: %d)", diceString, score);
+        NSLog(@"\"roll\", \"hold\" or \"reset\"\n\n> ");
         
         NSString *input = [self prompt];
         
@@ -62,8 +64,8 @@
             }
         }
         
-        if ([input isEqual: @""]) {
-            
+        if ([input isEqual: @"reset"]) {
+            [_heldDice removeAllObjects];
         }
     }
 }
