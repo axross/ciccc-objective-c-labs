@@ -1,12 +1,13 @@
 #import <Foundation/Foundation.h>
-#import "DicePip.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Dice : NSObject
-@property (strong) DicePip *pip;
+@interface Die : NSObject
+@property (nonatomic) int pip;
 -(instancetype) initAndRoll;
 -(void) roll;
+-(int) asInt;
+-(NSString*) asString;
 @end
 
 NS_ASSUME_NONNULL_END

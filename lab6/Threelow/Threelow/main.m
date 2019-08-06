@@ -1,17 +1,11 @@
 #import <Foundation/Foundation.h>
-#import "Dice.h"
+#import "Application.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        NSArray *dice = @[
-            [[Dice alloc] initAndRoll],
-            [[Dice alloc] initAndRoll],
-            [[Dice alloc] initAndRoll],
-            [[Dice alloc] initAndRoll],
-            [[Dice alloc] initAndRoll]
-        ];
+        Application *application = [[Application alloc] init];
         
-        NSLog(@"%@", dice);
+        [application start];
     }
     return 0;
 }

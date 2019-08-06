@@ -1,18 +1,22 @@
-#import "DicePip.h"
+#include <stdlib.h>
+#import "Die.h"
 
-@implementation DicePip
--(instancetype) initWithValue: (int) value {
+@implementation Die
+-(instancetype) initAndRoll {
     if (self = [super init]) {
-        _value = value;
+        [self roll];
     }
     
     return self;
 }
--(int) value {
-    return _value;
+-(void) roll {
+    _pip = arc4random_uniform(6) + 1;
+}
+-(int) asInt {
+    return _pip;
 }
 -(NSString*) asString {
-    switch (_value) {
+    switch (_pip) {
         case 1: return @"⚀";
         case 2: return @"⚁";
         case 3: return @"⚂";
